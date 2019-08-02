@@ -1,3 +1,3 @@
 import Timers from "./Timers";
-
-export { Timers };
+import Modal from "./Modal";
+export { Timers, Modal };

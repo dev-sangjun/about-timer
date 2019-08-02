@@ -1,3 +1,3 @@
 import Shadow from "./Shadow";
-
-export { Shadow };
+import Animation from "./Animation";
+export { Shadow, Animation };

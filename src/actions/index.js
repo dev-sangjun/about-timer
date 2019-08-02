@@ -45,3 +45,22 @@ export const resetTimer = id => {
     id
   };
 };
+
+export const openModal = (
+  title = "",
+  originalMinutes = "",
+  originalSeconds = ""
+) => {
+  return {
+    type: types.OPEN_MODAL,
+    title,
+    originalMinutes,
+    originalSeconds
+  };
+};
+
+export const closeModal = () => {
+  return {
+    type: types.CLOSE_MODAL
+  };
+};

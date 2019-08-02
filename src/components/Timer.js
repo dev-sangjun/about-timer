@@ -9,18 +9,21 @@ import {
 import { Button } from "../elements";
 import { Shadow } from "../ui";
 
-const Timer = ({ className }) => {
+const Timer = ({ className, timer }) => {
+  const { title, minutes, seconds } = timer;
   return (
     <div className={className}>
       <div className="top-bar">
-        <h2>Title</h2>
+        <h2>{title}</h2>
         <div className="buttons">
           <Button.fa icon={faCog} size="sm" />
           <Button.fa icon={faTimes} size="sm" />
         </div>
       </div>
       <div className="bottom-container">
-        <span className="time-display">56:00</span>
+        <span className="time-display">
+          {minutes}:{seconds}
+        </span>
         <div className="buttons">
           <Button.fa icon={faPlay} size="md" />
           <Button.fa icon={faRedo} size="md" />

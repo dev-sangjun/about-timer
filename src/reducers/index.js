@@ -1,3 +1,4 @@
+import { combineReducers } from "redux";
 import TimerHandler from "./TimerHandler";
-
-export default { TimerHandler };
+import UIHandler from "./UIHandler";
+export default combineReducers({ TimerHandler, UIHandler });

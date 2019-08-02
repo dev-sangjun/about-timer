@@ -7,18 +7,30 @@ import * as actions from "../actions";
 import { Timer } from "../components";
 import { Button } from "../elements";
 
-const Timers = ({ className, timers }) => {
-  const mapTimersToComponents = timers => timers.map(timer => <Timer />);
+const Timers = ({ className, timers, openModal }) => {
+  const mapTimersToComponents = timers =>
+    timers.map(timer => <Timer key={timer.id} timer={timer} />);
   return (
     <div className={className}>
-      <Button.fa className="add-icon" icon={faPlus} size="lg" />
+      <Button.fa
+        className="add-icon"
+        icon={faPlus}
+        size="lg"
+        onClick={e => {
+          e.preventDefault();
+          console.log("NEW TIMER CLICKED");
+          openModal();
+        }}
+      />
       {mapTimersToComponents(timers)}
     </div>
   );
 };
 
 const mapStateToProps = state => ({
-  timers: state.TimerHandler.timers
+  timers: state.TimerHandler.timers,
+  displayModal: state.UIHandler.displayModal,
+  modal: state.UIHandler.modal
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

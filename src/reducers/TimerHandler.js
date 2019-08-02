@@ -47,17 +47,17 @@ const TimerHandler = (state = initialState, action) => {
     case types.SUB_SECOND:
       return {
         ...state,
-        timers: timers.map(timer =>
+        timers: state.timers.map(timer =>
           timer.id === action.id ? handleSubSecond(timer) : timer
         )
       };
     case types.CREATE_TIMER:
       return {
-        nextTimerId: nextTimerId + 1,
+        nextTimerId: state.nextTimerId + 1,
         timers: [
           {
             ...action,
-            id: nextTimerId,
+            id: state.nextTimerId,
             minutes: action.originalMinutes,
             seconds: action.originalSeconds
           },
@@ -67,12 +67,12 @@ const TimerHandler = (state = initialState, action) => {
     case types.DELETE_TIMER:
       return {
         ...state,
-        timers: timers.filter(timer => timer.id !== action.id)
+        timers: state.timers.filter(timer => timer.id !== action.id)
       };
     case types.TOGGLE_TIMER:
       return {
         ...state,
-        timers: timers.map(timer =>
+        timers: state.timers.map(timer =>
           timer.id === action.id
             ? {
                 ...timer,
@@ -84,7 +84,7 @@ const TimerHandler = (state = initialState, action) => {
     case types.UPDATE_TIMER:
       return {
         ...state,
-        timers: timers.map(timer =>
+        timers: state.timers.map(timer =>
           timer.id === action.id
             ? {
                 ...action,
@@ -99,7 +99,7 @@ const TimerHandler = (state = initialState, action) => {
     case types.RESET_TIMER:
       return {
         ...state,
-        timers: timers.map(timer =>
+        timers: state.timers.map(timer =>
           timer.id === action.id
             ? {
                 ...timer,
