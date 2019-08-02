@@ -1,26 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Timers } from "./layouts";
+import { Background } from "./elements";
+import { GlobalStyle } from "./global";
 
-function App() {
+const App = () => {
+  const timers = [{}, {}];
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Background backgroundColor="greenyellow">
+        <Timers timers={timers} />
+      </Background>
+      <GlobalStyle />
     </div>
   );
-}
+};
 
 export default App;
