@@ -10,15 +10,26 @@ import { Shadow } from "../ui";
 
 const Modal = props => {
   const { className, modal } = props;
-  const { displayModal, closeModal } = props;
+  const { displayModal, updateModal, closeModal } = props;
   const { createTimer } = props;
   const handleCreateTimer = () => {
     const form = document.forms["timer-form"];
     if (validateForm(form)) {
-      const { title, minutes, seconds } = form;
-      createTimer(title.value, minutes.value, seconds.value);
+      const { title, originalMinutes, originalSeconds } = form;
+      createTimer(title.value, originalMinutes.value, originalSeconds.value);
       closeModal();
     }
+  };
+  const handleUpdateModal = (
+    title = "",
+    originalMinutes = "",
+    originalSeconds = ""
+  ) => {
+    updateModal(title, originalMinutes, originalSeconds);
+    const form = document.forms["timer-form"];
+    form.title.value = title;
+    form.originalMinutes.value = originalMinutes;
+    form.originalSeconds.value = originalSeconds;
   };
   return (
     <div className={`${className} ${displayModal ? "visible" : "collapse"}`}>
@@ -32,9 +43,48 @@ const Modal = props => {
       <div className={`modal-content ${displayModal && "bounce-in"}`}>
         <form className="timer-form" name="timer-form">
           <div className="inputs">
-            <input type="text" name="title" placeholder="Title" />
-            <input type="text" name="minutes" placeholder="Minutes" />
-            <input type="text" name="seconds" placeholder="Seconds" />
+            <input
+              type="text"
+              name="title"
+              placeholder="Title"
+              value={modal.title}
+              onChange={e => {
+                e.preventDefault();
+                handleUpdateModal(
+                  e.target.value,
+                  modal.originalMinutes,
+                  modal.originalSeconds
+                );
+              }}
+            />
+            <input
+              type="text"
+              name="originalMinutes"
+              placeholder="Minutes"
+              value={modal.originalMinutes}
+              onChange={e => {
+                e.preventDefault();
+                handleUpdateModal(
+                  modal.title,
+                  e.target.value,
+                  modal.originalSeconds
+                );
+              }}
+            />
+            <input
+              type="text"
+              name="originalSeconds"
+              placeholder="Seconds"
+              value={modal.originalSeconds}
+              onChange={e => {
+                e.preventDefault();
+                handleUpdateModal(
+                  modal.title,
+                  modal.originalMinutes,
+                  e.target.value
+                );
+              }}
+            />
           </div>
           <ul className="error-messages" />
           <div className="buttons">

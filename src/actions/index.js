@@ -59,6 +59,14 @@ export const openModal = (
   };
 };
 
+export const updateModal = (title, originalMinutes, originalSeconds) => {
+  return {
+    type: types.UPDATE_MODAL,
+    title,
+    originalMinutes,
+    originalSeconds
+  };
+};
 export const closeModal = () => {
   return {
     type: types.CLOSE_MODAL

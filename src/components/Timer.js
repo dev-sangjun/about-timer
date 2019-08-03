@@ -13,16 +13,42 @@ import { Button } from "../elements";
 import { Shadow } from "../ui";
 
 class Timer extends Component {
+  state = {
+    timerInterval: undefined
+  };
+  componentWillReceiveProps(nextProps) {
+    const { timer } = this.props;
+    const { subSecond } = this.props;
+    const { nextTimer } = nextProps.timer;
+    if (!timer.running && nextTimer.running) {
+      this.setState({
+        timerInterval: setInterval(() => subSecond(timer.id), 1000)
+      });
+    } else if (timer.running && !nextTimer.running) {
+      clearInterval(this.state.timerInterval);
+    }
+  }
   render() {
-    const { className, timer } = this.props;
+    const { className, timer, modal } = this.props;
     const { id, title, minutes, seconds } = timer;
+    const { openModal, updateModal } = this.props;
     const { deleteTimer } = this.props;
+    console.log("props", this.props);
     return (
       <div className={className}>
         <div className="top-bar">
           <span className="title">{title}</span>
           <div className="buttons">
-            <Button.fa icon={faCog} size="sm" />
+            <Button.fa
+              icon={faCog}
+              size="sm"
+              onClick={e => {
+                e.preventDefault();
+                updateModal(title, minutes, seconds);
+                console.log(modal);
+                openModal();
+              }}
+            />
             <Button.fa
               icon={faTimes}
               size="sm"
@@ -52,7 +78,7 @@ class Timer extends Component {
 }
 
 const mapStateToProps = state => ({
-  modal: state.UIHandler.modal
+  ...state.UIHandler
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

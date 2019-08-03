@@ -14,11 +14,13 @@ const UIHandler = (state = initialState, action) => {
     case types.OPEN_MODAL:
       return {
         ...state,
-        displayModal: true,
+        displayModal: true
+      };
+    case types.UPDATE_MODAL:
+      return {
+        ...state,
         modal: {
-          title: action.title,
-          originalMinutes: action.originalMinutes,
-          originalSeconds: action.originalSeconds
+          ...action
         }
       };
     case types.CLOSE_MODAL:

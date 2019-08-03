@@ -7,7 +7,9 @@ import * as actions from "../actions";
 import { Timer } from "../components";
 import { Button } from "../elements";
 
-const Timers = ({ className, timers, openModal }) => {
+const Timers = props => {
+  const { className, timers } = props;
+  const { openModal } = props;
   const mapTimersToComponents = timers =>
     timers.map(timer => <Timer key={timer.id} timer={timer} />);
   return (

@@ -3,30 +3,6 @@ export const clearErrorMessages = errorMessages => {
     errorMessages.removeChild(errorMessages.firstChild);
   }
 };
-// export const initForm = timer => {
-//   console.log("PASSED IN TIMER: ", timer);
-//   const form = document.forms["new-timer-form"];
-//   if (timer) {
-//     const {
-//       name,
-//       originalMinutes,
-//       originalSeconds,
-//       textColor,
-//       backgroundColor
-//     } = timer;
-//     form.name.value = name;
-//     form.minutes.value = originalMinutes;
-//     form.seconds.value = originalSeconds;
-//     // form.textColor.value = textColor;
-//     // form.backgroundColor.value = backgroundColor;
-//   } else {
-//     form.name.value = "";
-//     form.minutes.value = "";
-//     form.seconds.value = "";
-//     // form.textColor.value = "000000";
-//     // form.backgroundColor.value = "FFFFFF";
-//   }
-// };
 
 export const validateForm = form => {
   const title = form.title.value;
