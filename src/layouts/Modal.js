@@ -156,7 +156,6 @@ export default connect(
     top: 50%;
     left: 50%;
     transform: translate(-50%, 3rem);
-    width: 50%;
     padding: 1rem;
     background-color: white;
     ${Shadow.card};
