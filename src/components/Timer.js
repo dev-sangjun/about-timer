@@ -18,7 +18,7 @@ class Timer extends Component {
   componentWillReceiveProps(nextProps) {
     const { timer } = this.props;
     const { id, running } = timer;
-    const { subSecond, resetTimer } = this.props;
+    const { subSecond } = this.props;
     const nextTimer = nextProps.timer;
     if (!running && nextTimer.running) {
       this.setState({
@@ -150,7 +150,7 @@ export default connect(
       font-size: 2rem;
       font-weight: lighter;
       margin: 1rem 0 0 0;
-      font-family: "Major Mono Display", "Cutive Mono", monospace;
+      font-family: "Major Mono Display", monospace;
     }
     .buttons {
       display: flex;

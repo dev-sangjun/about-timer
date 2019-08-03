@@ -81,7 +81,6 @@ const TimerHandler = (state = initialState, action) => {
         )
       };
     case types.UPDATE_TIMER:
-      console.log("UPDATE_TIMER:", action);
       return {
         ...state,
         timers: state.timers.map(timer =>

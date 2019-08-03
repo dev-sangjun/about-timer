@@ -1,5 +1,3 @@
-import { formatTimeElement } from "../utilities";
-
 const init = state => {
   const { timers } = state.TimerHandler;
   state.TimerHandler.timers = timers.map(timer => {
