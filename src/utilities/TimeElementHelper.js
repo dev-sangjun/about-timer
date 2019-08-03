@@ -1,7 +1,8 @@
 export const formatTimeElement = element => {
+  const integer = parseInt(element);
   if (element < 10) {
-    return `0${element}`;
+    return `0${integer}`;
   } else {
-    return `${element}`;
+    return `${integer}`;
   }
 };

@@ -5,10 +5,9 @@ const init = state => {
   state.TimerHandler.timers = timers.map(timer => {
     return {
       ...timer,
-      minutes: formatTimeElement(timer.originalMinutes),
-      seconds: formatTimeElement(timer.originalSeconds),
-      running: false,
-      completed: false
+      minutes: timer.completed ? "00" : timer.originalMinutes,
+      seconds: timer.completed ? "00" : timer.originalSeconds,
+      running: false
     };
   });
   state.UIHandler.displayModal = false;

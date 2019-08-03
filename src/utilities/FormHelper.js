@@ -6,8 +6,8 @@ export const clearErrorMessages = errorMessages => {
 
 export const validateForm = form => {
   const title = form.title.value;
-  const minutes = parseInt(form.minutes.value);
-  const seconds = parseInt(form.seconds.value);
+  const minutes = parseInt(form.originalMinutes.value);
+  const seconds = parseInt(form.originalSeconds.value);
   const errorMessages = form.querySelector(".error-messages");
   clearErrorMessages(errorMessages);
   const appendErrorMessage = message => {

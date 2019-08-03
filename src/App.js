@@ -6,11 +6,12 @@ import { GlobalStyle } from "./global";
 const App = () => {
   return (
     <div className="App">
+      <GlobalStyle />
+
       <Background backgroundColor="white">
         <Timers />
         <Modal />
       </Background>
-      <GlobalStyle />
     </div>
   );
 };

@@ -11,21 +11,23 @@ import { Shadow } from "../ui";
 const Modal = props => {
   const { className, modal } = props;
   const { displayModal, updateModal, closeModal } = props;
-  const { createTimer } = props;
+  const { createTimer, updateTimer } = props;
   const handleCreateTimer = () => {
-    const form = document.forms["timer-form"];
-    if (validateForm(form)) {
-      const { title, originalMinutes, originalSeconds } = form;
-      createTimer(title.value, originalMinutes.value, originalSeconds.value);
-      closeModal();
-    }
+    const { title, originalMinutes, originalSeconds } = modal;
+    console.log("CREATING", title, originalMinutes, originalSeconds);
+    createTimer(title, originalMinutes, originalSeconds);
+  };
+  const handleUpdateTimer = () => {
+    const { id, title, originalMinutes, originalSeconds } = modal;
+    console.log("updating");
+    updateTimer(id, title, originalMinutes, originalSeconds);
   };
   const handleUpdateModal = (
     title = "",
     originalMinutes = "",
     originalSeconds = ""
   ) => {
-    updateModal(title, originalMinutes, originalSeconds);
+    updateModal(modal.id, title, originalMinutes, originalSeconds);
     const form = document.forms["timer-form"];
     form.title.value = title;
     form.originalMinutes.value = originalMinutes;
@@ -94,7 +96,16 @@ const Modal = props => {
               size="lg"
               onClick={e => {
                 e.preventDefault();
-                handleCreateTimer();
+                const form = document.forms["timer-form"];
+                if (validateForm(form)) {
+                  console.log("AFTER VALIDATING, MODAL: ", modal);
+                  if (modal.id !== undefined) {
+                    handleUpdateTimer();
+                  } else {
+                    handleCreateTimer();
+                  }
+                  closeModal();
+                }
               }}
             />
             <Button.fa

@@ -30,9 +30,10 @@ export const toggleTimer = id => {
   };
 };
 
-export const updateTimer = (title, originalMinutes, originalSeconds) => {
+export const updateTimer = (id, title, originalMinutes, originalSeconds) => {
   return {
-    type: types.DELETE_TIMER,
+    type: types.UPDATE_TIMER,
+    id,
     title,
     originalMinutes,
     originalSeconds
@@ -59,9 +60,10 @@ export const openModal = (
   };
 };
 
-export const updateModal = (title, originalMinutes, originalSeconds) => {
+export const updateModal = (id, title, originalMinutes, originalSeconds) => {
   return {
     type: types.UPDATE_MODAL,
+    id,
     title,
     originalMinutes,
     originalSeconds

@@ -3,6 +3,7 @@ import * as types from "../actions/ActionTypes";
 const initialState = {
   displayModal: false,
   modal: {
+    id: undefined,
     title: "",
     originalMinutes: "",
     originalSeconds: ""
@@ -12,6 +13,7 @@ const initialState = {
 const UIHandler = (state = initialState, action) => {
   switch (action.type) {
     case types.OPEN_MODAL:
+      console.log("MODAL OPENED: ", state.modal);
       return {
         ...state,
         displayModal: true
@@ -20,6 +22,7 @@ const UIHandler = (state = initialState, action) => {
       return {
         ...state,
         modal: {
+          id: action.id || undefined,
           ...action
         }
       };

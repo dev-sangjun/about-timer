@@ -53,8 +53,12 @@ const TimerHandler = (state = initialState, action) => {
           {
             ...action,
             id: state.nextTimerId,
+            originalMinutes: formatTimeElement(action.originalMinutes),
+            originalSeconds: formatTimeElement(action.originalSeconds),
             minutes: formatTimeElement(action.originalMinutes),
-            seconds: formatTimeElement(action.originalSeconds)
+            seconds: formatTimeElement(action.originalSeconds),
+            running: false,
+            completed: false
           },
           ...state.timers
         ]
@@ -77,12 +81,16 @@ const TimerHandler = (state = initialState, action) => {
         )
       };
     case types.UPDATE_TIMER:
+      console.log("UPDATE_TIMER:", action);
       return {
         ...state,
         timers: state.timers.map(timer =>
           timer.id === action.id
             ? {
-                ...action,
+                id: action.id,
+                title: action.title,
+                originalMinutes: formatTimeElement(action.originalMinutes),
+                originalSeconds: formatTimeElement(action.originalSeconds),
                 minutes: formatTimeElement(action.originalMinutes),
                 seconds: formatTimeElement(action.originalSeconds),
                 running: false,
@@ -98,8 +106,8 @@ const TimerHandler = (state = initialState, action) => {
           timer.id === action.id
             ? {
                 ...timer,
-                minutes: formatTimeElement(timer.originalMinutes),
-                seconds: formatTimeElement(timer.originalSeconds),
+                minutes: timer.originalMinutes,
+                seconds: timer.originalSeconds,
                 running: false,
                 completed: false
               }
