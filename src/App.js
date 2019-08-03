@@ -6,14 +6,14 @@ import { Timers, Modal } from "./layouts";
 import { Background } from "./elements";
 import { GlobalStyle } from "./global";
 
-const App = ({ displayModal, modal }) => {
-  const timers = [{}, {}];
-  console.log(displayModal, modal);
+const App = props => {
+  const { displayModal, modal } = props;
+  const { timers } = props;
   return (
     <div className="App">
-      <Background backgroundColor="greenyellow">
+      <Background backgroundColor="white">
         <Timers timers={timers} />
-        {displayModal && <Modal modal={modal} />}
+        <Modal modal={modal} />
       </Background>
       <GlobalStyle />
     </div>

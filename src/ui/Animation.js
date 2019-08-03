@@ -2,20 +2,39 @@ import { keyframes } from "styled-components";
 
 export default {
   fadeIn: keyframes`
-    0% {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  `,
+  fadeOut: keyframes`
+    from {
+      opacity: 1;
+    }
+    to {
       opacity: 0;
     }
   `,
   bounceIn: keyframes`
-    0% {
+    from {
       opacity: 0;
-      transform: translate(-50%, -100px);
+      transform: translate(-50%, -6rem);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%);
     }
   `,
   bounceOut: keyframes`
-    0% {
-      opacity: 1;
-      transform: translate(-50%, -100px);
-    }
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -6rem);
+  }
   `
 };

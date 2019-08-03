@@ -1,23 +1,61 @@
 import React from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import styled from "styled-components";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { Animation } from "../ui";
+import * as actions from "../actions";
 import { Button } from "../elements";
+import { validateForm } from "../utilities";
+import { Shadow } from "../ui";
 
-const Modal = ({ className }) => {
+const Modal = props => {
+  const { className, modal } = props;
+  const { displayModal, closeModal } = props;
+  const { createTimer } = props;
+  const handleCreateTimer = () => {
+    const form = document.forms["timer-form"];
+    if (validateForm(form)) {
+      const { title, minutes, seconds } = form;
+      createTimer(title.value, minutes.value, seconds.value);
+      closeModal();
+    }
+  };
   return (
-    <div className={className}>
-      <div className="modal-bg" />
-      <div className="modal-content">
-        <form className="timer-form" name="timerForm">
+    <div className={`${className} ${displayModal ? "visible" : "collapse"}`}>
+      <div
+        className={`modal-bg ${displayModal && "fade-in"}`}
+        onClick={e => {
+          e.preventDefault();
+          closeModal();
+        }}
+      />
+      <div className={`modal-content ${displayModal && "bounce-in"}`}>
+        <form className="timer-form" name="timer-form">
           <div className="inputs">
-            <input type="text" placeholder="Title" />
-            <input type="text" placeholder="Minutes" />
-            <input type="text" placeholder="Seconds" />
+            <input type="text" name="title" placeholder="Title" />
+            <input type="text" name="minutes" placeholder="Minutes" />
+            <input type="text" name="seconds" placeholder="Seconds" />
           </div>
+          <ul className="error-messages" />
           <div className="buttons">
-            <Button.fa className="save-icon" icon={faCheck} size="lg" />
-            <Button.fa className="cancel-icon" icon={faTimes} size="lg" />
+            <Button.fa
+              className="save-icon"
+              icon={faCheck}
+              size="lg"
+              onClick={e => {
+                e.preventDefault();
+                handleCreateTimer();
+              }}
+            />
+            <Button.fa
+              className="cancel-icon"
+              icon={faTimes}
+              size="lg"
+              onClick={e => {
+                e.preventDefault();
+                closeModal();
+              }}
+            />
           </div>
         </form>
       </div>
@@ -25,11 +63,17 @@ const Modal = ({ className }) => {
   );
 };
 
-Modal.propTypes = {};
+const mapStateToProps = state => ({
+  displayModal: state.UIHandler.displayModal,
+  modal: state.UIHandler.modal
+});
 
-Modal.defaultProps = {};
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
-export default styled(Modal)`
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(styled(Modal)`
   position: absolute;
   top: 0;
   left: 0;
@@ -42,27 +86,22 @@ export default styled(Modal)`
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    opacity: 0.5;
-    animation: ${Animation.fadeIn} 300ms ease-in-out;
-  }
-  .active {
-    opacity: 0.5;
-  }
-  .bounce-in {
-    transform: translate(-50%, -50%);
+    opacity: 0;
+    -webkit-transition: all 800ms;
+    transition: all 800ms;
   }
   .modal-content {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -100px);
+    transform: translate(-50%, 3rem);
     width: 50%;
-    height: 30%;
-    padding: 0.5rem;
+    padding: 1rem;
     background-color: white;
+    ${Shadow.card};
     opacity: 0;
-    -webkit-transition: opacity 300ms;
-    transition: opacity 300ms;
+    -webkit-transition: all 800ms;
+    transition: all 800ms;
     .timer-form {
       height: 100%;
       display: flex;
@@ -80,6 +119,16 @@ export default styled(Modal)`
         }
         &:focus {
           outline: none;
+        }
+      }
+      .error-messages {
+        width: 100%;
+        padding: 0 0.5rem;
+        margin: 0.5rem 0;
+        text-align: left;
+        color: red;
+        li {
+          line-height: 1.5rem;
         }
       }
       .buttons {
@@ -101,4 +150,12 @@ export default styled(Modal)`
       }
     }
   }
-`;
+  .fade-in {
+    opacity: 0.5;
+  }
+  .bounce-in {
+    opacity: 1;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+`);

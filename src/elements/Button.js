@@ -15,9 +15,9 @@ const getSize = size => {
       return 16;
   }
 };
-const fa = ({ className, icon }) => {
+const fa = ({ className, icon, onClick }) => {
   return (
-    <div className={className}>
+    <div className={className} onClick={onClick}>
       <FontAwesomeIcon className="fa-icon" icon={icon} />
     </div>
   );

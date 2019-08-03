@@ -10,7 +10,6 @@ import { Provider } from "react-redux";
 const store = loadStore(reducers);
 store.subscribe(() => {
   saveState(store.getState());
-  console.log("STATE: ", store.getState());
 });
 ReactDOM.render(
   <Provider store={store}>

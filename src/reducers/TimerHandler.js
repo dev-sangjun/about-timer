@@ -1,16 +1,11 @@
 import * as types from "../actions/ActionTypes";
+import { formatTimeElement } from "../utilities";
 
 const initialState = {
   nextTimerId: 0,
   timers: []
 };
-const formatTimeElement = element => {
-  if (element < 10) {
-    return `0${element}`;
-  } else {
-    return `${element}`;
-  }
-};
+
 const handleSubSecond = timer => {
   const { minutes, seconds } = timer;
   if (seconds > 0) {
@@ -58,8 +53,8 @@ const TimerHandler = (state = initialState, action) => {
           {
             ...action,
             id: state.nextTimerId,
-            minutes: action.originalMinutes,
-            seconds: action.originalSeconds
+            minutes: formatTimeElement(action.originalMinutes),
+            seconds: formatTimeElement(action.originalSeconds)
           },
           ...state.timers
         ]
@@ -88,8 +83,8 @@ const TimerHandler = (state = initialState, action) => {
           timer.id === action.id
             ? {
                 ...action,
-                minutes: action.originalMinutes,
-                seconds: action.originalSeconds,
+                minutes: formatTimeElement(action.originalMinutes),
+                seconds: formatTimeElement(action.originalSeconds),
                 running: false,
                 completed: false
               }
@@ -103,8 +98,8 @@ const TimerHandler = (state = initialState, action) => {
           timer.id === action.id
             ? {
                 ...timer,
-                minutes: timer.originalMinutes,
-                seconds: timer.originalSeconds,
+                minutes: formatTimeElement(timer.originalMinutes),
+                seconds: formatTimeElement(timer.originalSeconds),
                 running: false,
                 completed: false
               }

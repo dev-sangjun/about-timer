@@ -18,7 +18,6 @@ const Timers = ({ className, timers, openModal }) => {
         size="lg"
         onClick={e => {
           e.preventDefault();
-          console.log("NEW TIMER CLICKED");
           openModal();
         }}
       />

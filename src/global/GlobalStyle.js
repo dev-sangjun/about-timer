@@ -60,6 +60,13 @@ const GlobalStyle = createGlobalStyle`
     width: 100vw;
     height: 100vh;
   }
+  .visible {
+    visibility: visible;
+  }
+  .collapse {
+    visibility: collapse;
+  }
+  
 `;
 
 export default GlobalStyle;

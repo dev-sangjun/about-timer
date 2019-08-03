@@ -14,7 +14,7 @@ const Timer = ({ className, timer }) => {
   return (
     <div className={className}>
       <div className="top-bar">
-        <h2>{title}</h2>
+        <span className="title">{title}</span>
         <div className="buttons">
           <Button.fa icon={faCog} size="sm" />
           <Button.fa icon={faTimes} size="sm" />
@@ -42,15 +42,16 @@ export default styled(Timer)`
   ${Shadow.card}
   .top-bar {
     width: 100%;
-    padding: 0.25rem;
+    padding: 0.25rem 0.25rem 0.25rem 0.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.5);
-    h2 {
+    .title {
       position: relative;
       top: 0.125rem;
       left: 0;
+      font-size: 0.75rem;
     }
     .buttons {
       display: flex;

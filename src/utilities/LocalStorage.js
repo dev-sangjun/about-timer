@@ -1,14 +1,22 @@
+import { formatTimeElement } from "../utilities";
+
 const init = state => {
   const { timers } = state.TimerHandler;
   state.TimerHandler.timers = timers.map(timer => {
     return {
       ...timer,
-      minutes: timer.originalMinutes,
-      seconds: timer.originalSeconds,
+      minutes: formatTimeElement(timer.originalMinutes),
+      seconds: formatTimeElement(timer.originalSeconds),
       running: false,
       completed: false
     };
   });
+  state.UIHandler.displayModal = false;
+  state.UIHandler.modal = {
+    title: "",
+    originalMinutes: "",
+    originalSeconds: ""
+  };
 };
 export const loadState = () => {
   try {
