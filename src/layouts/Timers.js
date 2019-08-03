@@ -6,6 +6,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import * as actions from "../actions";
 import { Timer } from "../components";
 import { Button } from "../elements";
+import { Animation } from "../ui";
 
 const Timers = props => {
   const { className, timers } = props;
@@ -23,7 +24,14 @@ const Timers = props => {
           openModal();
         }}
       />
-      {mapTimersToComponents(timers)}
+      {timers.length > 0 ? (
+        mapTimersToComponents(timers)
+      ) : (
+        <span className="empty-message">
+          Please add your todo timers <br />
+          Original Product by Sangjun
+        </span>
+      )}
     </div>
   );
 };
@@ -40,14 +48,24 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(styled(Timers)`
-  width: 50%;
+  width: 100%;
   padding: 1rem;
   margin: auto;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   .add-icon {
     margin-bottom: 0.5rem;
   }
+  .empty-message {
+    font-size: 1.5rem;
+    font-family: "Major Mono Display", monospace;
+    line-height: 3rem;
+    animation: ${Animation.fadeIn} 2s forwards;
+  }
   ${Timer} {
+    width: 40%;
     margin-bottom: 1rem;
     &:last-child {
       margin-bottom: 0;
