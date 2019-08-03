@@ -1,39 +1,66 @@
-import React from "react";
+import React, { Component } from "react";
 import styled from "styled-components";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import {
   faCog,
   faTimes,
   faPlay,
   faRedo
 } from "@fortawesome/free-solid-svg-icons";
+import * as actions from "../actions";
 import { Button } from "../elements";
 import { Shadow } from "../ui";
 
-const Timer = ({ className, timer }) => {
-  const { title, minutes, seconds } = timer;
-  return (
-    <div className={className}>
-      <div className="top-bar">
-        <span className="title">{title}</span>
-        <div className="buttons">
-          <Button.fa icon={faCog} size="sm" />
-          <Button.fa icon={faTimes} size="sm" />
+class Timer extends Component {
+  render() {
+    const { className, timer } = this.props;
+    const { id, title, minutes, seconds } = timer;
+    const { deleteTimer } = this.props;
+    return (
+      <div className={className}>
+        <div className="top-bar">
+          <span className="title">{title}</span>
+          <div className="buttons">
+            <Button.fa icon={faCog} size="sm" />
+            <Button.fa
+              icon={faTimes}
+              size="sm"
+              onClick={e => {
+                e.preventDefault();
+                if (
+                  window.confirm(`Are you sure you want to delete ${title}?`)
+                ) {
+                  deleteTimer(id);
+                }
+              }}
+            />
+          </div>
+        </div>
+        <div className="bottom-container">
+          <span className="time-display">
+            {minutes}:{seconds}
+          </span>
+          <div className="buttons">
+            <Button.fa icon={faPlay} size="md" />
+            <Button.fa icon={faRedo} size="md" />
+          </div>
         </div>
       </div>
-      <div className="bottom-container">
-        <span className="time-display">
-          {minutes}:{seconds}
-        </span>
-        <div className="buttons">
-          <Button.fa icon={faPlay} size="md" />
-          <Button.fa icon={faRedo} size="md" />
-        </div>
-      </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
-export default styled(Timer)`
+const mapStateToProps = state => ({
+  modal: state.UIHandler.modal
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(styled(Timer)`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -84,4 +111,4 @@ export default styled(Timer)`
       }
     }
   }
-`;
+`);
