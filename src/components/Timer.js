@@ -2,16 +2,9 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import {
-  faCog,
-  faTimes,
-  faPlay,
-  faPause,
-  faRedo
-} from "@fortawesome/free-solid-svg-icons";
+import { IconButton } from "@material-ui/core";
+import { Settings, Close, PlayArrow, Pause, Replay } from "@material-ui/icons";
 import * as actions from "../actions";
-import { Button } from "../elements";
-import { Shadow } from "../ui";
 import { stamp } from "../images";
 
 class Timer extends Component {
@@ -22,14 +15,14 @@ class Timer extends Component {
     const nextTimer = nextProps.timer;
     if (!running && nextTimer.running) {
       this.setState({
-        timerInterval: setInterval(() => subSecond(id), 1000)
+        timerInterval: setInterval(() => subSecond(id), 1000),
       });
     } else if (running && !nextTimer.running) {
       clearInterval(this.state.timerInterval);
     }
   }
   render() {
-    const { className, timer, modal } = this.props;
+    const { className, timer } = this.props;
     const {
       id,
       title,
@@ -38,29 +31,25 @@ class Timer extends Component {
       minutes,
       seconds,
       running,
-      completed
+      completed,
     } = timer;
     const { openModal, updateModal } = this.props;
     const { deleteTimer, toggleTimer, resetTimer } = this.props;
-    console.log("props", this.props);
     return (
       <div className={className}>
         <div className="top-bar">
           <span className="title">{title}</span>
           <div className="buttons">
-            <Button.fa
-              icon={faCog}
-              size="sm"
+            <IconButton
               onClick={e => {
                 e.preventDefault();
                 updateModal(id, title, originalMinutes, originalSeconds);
-                console.log(modal);
                 openModal();
               }}
-            />
-            <Button.fa
-              icon={faTimes}
-              size="sm"
+            >
+              <Settings className="icon" />
+            </IconButton>
+            <IconButton
               onClick={e => {
                 e.preventDefault();
                 if (
@@ -69,7 +58,9 @@ class Timer extends Component {
                   deleteTimer(id);
                 }
               }}
-            />
+            >
+              <Close className="icon" />
+            </IconButton>
           </div>
         </div>
         <div className="bottom-container">
@@ -77,22 +68,22 @@ class Timer extends Component {
             {minutes}:{seconds}
           </span>
           <div className="buttons">
-            <Button.fa
-              icon={running ? faPause : faPlay}
-              size="md"
+            <IconButton
               onClick={e => {
                 e.preventDefault();
                 toggleTimer(id);
               }}
-            />
-            <Button.fa
-              icon={faRedo}
-              size="md"
+            >
+              {running ? <Pause /> : <PlayArrow />}
+            </IconButton>
+            <IconButton
               onClick={e => {
                 e.preventDefault();
                 resetTimer(id);
               }}
-            />
+            >
+              <Replay />
+            </IconButton>
           </div>
           {completed && <img className="done-stamp" src={stamp} alt="stamp" />}
         </div>
@@ -102,7 +93,7 @@ class Timer extends Component {
 }
 
 const mapStateToProps = state => ({
-  ...state.UIHandler
+  ...state.UIHandler,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
@@ -117,26 +108,36 @@ export default connect(
   justify-content: center;
   align-items: center;
   background-color: white;
-  ${Shadow.card}
+  border-radius: 1rem;
+  overflow: hidden;
   .top-bar {
     width: 100%;
-    padding: 0.25rem 0.25rem 0.25rem 0.5rem;
+    padding: 0.5rem 1rem 0.5rem 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: gray;
     .title {
       position: relative;
-      top: 0.125rem;
+      top: -1px;
       left: 0;
-      font-size: 0.75rem;
+      color: white;
+      font-family: "Open Sans", sans-serif;
     }
     .buttons {
       display: flex;
-      ${Button.fa} {
+      color: white;
+      .MuiIconButton-root {
+        width: 1rem;
+        height: 1rem;
         margin-right: 0.25rem;
         &:last-child {
           margin-right: 0;
+        }
+        .icon {
+          width: 1rem;
+          height: 1rem;
+          color: white;
         }
       }
     }
@@ -155,12 +156,6 @@ export default connect(
     .buttons {
       display: flex;
       margin: 1.5rem 0;
-      ${Button.fa} {
-        margin-right: 1rem;
-        &:last-child {
-          margin-right: 0;
-        }
-      }
     }
     .done-stamp {
       position: absolute;

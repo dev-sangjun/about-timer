@@ -56,10 +56,6 @@ const GlobalStyle = createGlobalStyle`
   html {
     font-size: 16px;
   }
-  .App {
-    width: 100vw;
-    height: 100vh;
-  }
   .visible {
     visibility: visible;
   }

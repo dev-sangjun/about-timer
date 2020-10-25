@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { IconButton } from "@material-ui/core";
+import { Done, Close } from "@material-ui/icons";
 import * as actions from "../actions";
 import { Button } from "../elements";
 import { validateForm } from "../utilities";
@@ -10,29 +11,29 @@ import { Shadow } from "../ui";
 
 const Modal = props => {
   const { className, modal } = props;
-  const { displayModal, updateModal, closeModal } = props;
+  const { displayModal, closeModal } = props;
   const { createTimer, updateTimer } = props;
-  const handleCreateTimer = () => {
-    const { title, originalMinutes, originalSeconds } = modal;
-    console.log("CREATING", title, originalMinutes, originalSeconds);
-    createTimer(title, originalMinutes, originalSeconds);
-  };
-  const handleUpdateTimer = () => {
-    const { id, title, originalMinutes, originalSeconds } = modal;
-    console.log("updating");
-    updateTimer(id, title, originalMinutes, originalSeconds);
-  };
-  const handleUpdateModal = (
-    title = "",
-    originalMinutes = "",
-    originalSeconds = ""
-  ) => {
-    updateModal(modal.id, title, originalMinutes, originalSeconds);
+  const [title, setTitle] = useState("");
+  const [minutes, setMinutes] = useState("");
+  const [seconds, setSeconds] = useState("");
+
+  const onClick = e => {
+    e.preventDefault();
     const form = document.forms["timer-form"];
-    form.title.value = title;
-    form.originalMinutes.value = originalMinutes;
-    form.originalSeconds.value = originalSeconds;
+    if (validateForm(form)) {
+      if (modal.id !== undefined) {
+        updateTimer(modal.id, title, minutes, seconds);
+      } else {
+        createTimer(title, minutes, seconds);
+      }
+      closeModal();
+    }
   };
+  useEffect(() => {
+    setTitle(modal.title);
+    setMinutes(modal.originalMinutes);
+    setSeconds(modal.originalSeconds);
+  }, [modal]);
   return (
     <div className={`${className} ${displayModal ? "visible" : "collapse"}`}>
       <div
@@ -49,74 +50,43 @@ const Modal = props => {
               type="text"
               name="title"
               placeholder="Title"
-              value={modal.title}
+              value={title}
               onChange={e => {
-                e.preventDefault();
-                handleUpdateModal(
-                  e.target.value,
-                  modal.originalMinutes,
-                  modal.originalSeconds
-                );
+                setTitle(e.target.value);
               }}
             />
             <input
               type="text"
               name="originalMinutes"
               placeholder="Minutes"
-              value={modal.originalMinutes}
+              value={minutes}
               onChange={e => {
-                e.preventDefault();
-                handleUpdateModal(
-                  modal.title,
-                  e.target.value,
-                  modal.originalSeconds
-                );
+                setMinutes(e.target.value);
               }}
             />
             <input
               type="text"
               name="originalSeconds"
               placeholder="Seconds"
-              value={modal.originalSeconds}
+              value={seconds}
               onChange={e => {
-                e.preventDefault();
-                handleUpdateModal(
-                  modal.title,
-                  modal.originalMinutes,
-                  e.target.value
-                );
+                setSeconds(e.target.value);
               }}
             />
           </div>
           <ul className="error-messages" />
           <div className="buttons">
-            <Button.fa
-              className="save-icon"
-              icon={faCheck}
-              size="lg"
-              onClick={e => {
-                e.preventDefault();
-                const form = document.forms["timer-form"];
-                if (validateForm(form)) {
-                  console.log("AFTER VALIDATING, MODAL: ", modal);
-                  if (modal.id !== undefined) {
-                    handleUpdateTimer();
-                  } else {
-                    handleCreateTimer();
-                  }
-                  closeModal();
-                }
-              }}
-            />
-            <Button.fa
-              className="cancel-icon"
-              icon={faTimes}
-              size="lg"
+            <IconButton onClick={onClick}>
+              <Done />
+            </IconButton>
+            <IconButton
               onClick={e => {
                 e.preventDefault();
                 closeModal();
               }}
-            />
+            >
+              <Close />
+            </IconButton>
           </div>
         </form>
       </div>
@@ -126,7 +96,7 @@ const Modal = props => {
 
 const mapStateToProps = state => ({
   displayModal: state.UIHandler.displayModal,
-  modal: state.UIHandler.modal
+  modal: state.UIHandler.modal,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
@@ -135,6 +105,7 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(styled(Modal)`
+  font-family: "Open Sans", sans-serif;
   position: absolute;
   top: 0;
   left: 0;
@@ -148,20 +119,21 @@ export default connect(
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     opacity: 0;
-    -webkit-transition: all 800ms;
-    transition: all 800ms;
+    -webkit-transition: all 400ms ease-in-out;
+    transition: all 400ms ease-in-out;
   }
   .modal-content {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, 3rem);
-    padding: 1rem;
+    padding: 1.5rem;
     background-color: white;
+    border-radius: 1rem;
     ${Shadow.card};
     opacity: 0;
-    -webkit-transition: all 800ms;
-    transition: all 800ms;
+    -webkit-transition: all 400ms ease-in-out;
+    transition: all 400ms ease-in-out;
     .timer-form {
       height: 100%;
       display: flex;
@@ -194,7 +166,7 @@ export default connect(
       .buttons {
         width: 100%;
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
         ${Button.fa} {
           margin-right: 0.5rem;
           &:last-child {

@@ -6,25 +6,24 @@ const initialState = {
     id: undefined,
     title: "",
     originalMinutes: "",
-    originalSeconds: ""
-  }
+    originalSeconds: "",
+  },
 };
 
 const UIHandler = (state = initialState, action) => {
   switch (action.type) {
     case types.OPEN_MODAL:
-      console.log("MODAL OPENED: ", state.modal);
       return {
         ...state,
-        displayModal: true
+        displayModal: true,
       };
     case types.UPDATE_MODAL:
       return {
         ...state,
         modal: {
           id: action.id || undefined,
-          ...action
-        }
+          ...action,
+        },
       };
     case types.CLOSE_MODAL:
       return initialState;

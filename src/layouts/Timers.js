@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { IconButton } from "@material-ui/core";
+import { Add } from "@material-ui/icons";
 import * as actions from "../actions";
 import { Timer } from "../components";
-import { Button } from "../elements";
 import { Animation } from "../ui";
 
 const Timers = props => {
@@ -15,23 +15,24 @@ const Timers = props => {
     timers.map(timer => <Timer key={timer.id} timer={timer} />);
   return (
     <div className={className}>
-      <Button.fa
-        className="add-icon"
-        icon={faPlus}
-        size="lg"
+      <IconButton
         onClick={e => {
           e.preventDefault();
           openModal();
         }}
-      />
-      {timers.length > 0 ? (
-        mapTimersToComponents(timers)
-      ) : (
-        <span className="empty-message">
-          Please add your todo timers <br />
-          Original Product by Sangjun
-        </span>
-      )}
+      >
+        <Add />
+      </IconButton>
+      <ul className="timers">
+        {timers.length > 0 ? (
+          mapTimersToComponents(timers)
+        ) : (
+          <span className="empty-message">
+            Please add your todo timers <br />
+            Original Product by Sangjun
+          </span>
+        )}
+      </ul>
     </div>
   );
 };
@@ -39,7 +40,7 @@ const Timers = props => {
 const mapStateToProps = state => ({
   timers: state.TimerHandler.timers,
   displayModal: state.UIHandler.displayModal,
-  modal: state.UIHandler.modal
+  modal: state.UIHandler.modal,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
@@ -64,11 +65,20 @@ export default connect(
     line-height: 3rem;
     animation: ${Animation.fadeIn} 2s forwards;
   }
-  ${Timer} {
-    width: 40%;
-    margin-bottom: 1rem;
-    &:last-child {
-      margin-bottom: 0;
+  .timers {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    ${Timer} {
+      width: 80%;
+      max-width: 30rem;
+      margin-bottom: 1rem;
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 `);
